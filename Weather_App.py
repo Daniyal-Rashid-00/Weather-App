@@ -1,3 +1,5 @@
+# By Daniyal
+
 import requests
 import tkinter as tk
 from tkinter import messagebox
@@ -16,7 +18,9 @@ def fetch_weather():
             location = data['location']['name']
             temperature = data['current']['temp_c']
             condition = data['current']['condition']['text']
-            weather_label.config(text=f"Location: {location}\nTemperature: {temperature}°C\nCondition: {condition}")
+            humidity = data['current']['humidity']
+            wind_speed = data['current']['wind_kph']
+            weather_label.config(text=f"\nLocation: {location}\nTemperature: {temperature}°C\nCondition: {condition}\nHumidity: {humidity}%\nWind-Speed: {wind_speed}kph")
         else:
             messagebox.showerror("Error", data.get("error", {}).get("message", "Unable to fetch weather data"))
     except Exception as e:
@@ -24,7 +28,8 @@ def fetch_weather():
 
 # Set up the GUI
 root = tk.Tk()
-root.title("Weather App")
+root.title("Weather App (By Daniyal)")
+root.geometry("350x200") # width x height
 
 city_label = tk.Label(root, text="City:")
 city_label.pack()
