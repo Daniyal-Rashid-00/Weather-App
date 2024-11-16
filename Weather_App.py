@@ -15,12 +15,13 @@ def fetch_weather():
         data = response.json()
         
         if response.status_code == 200:
-            location = data['location']['name']
+            location = f"{data['location']['name']}, {data['location']['region']}, {data["location"]["country"]}"
             temperature = data['current']['temp_c']
             condition = data['current']['condition']['text']
             humidity = data['current']['humidity']
+            cloud = data['current']['cloud']
             wind_speed = data['current']['wind_kph']
-            weather_label.config(text=f"\nLocation: {location}\nTemperature: {temperature}°C\nCondition: {condition}\nHumidity: {humidity}%\nWind-Speed: {wind_speed}kph")
+            weather_label.config(text=f"\nLocation: {location}\nTemperature: {temperature}°C\nCondition: {condition}\nHumidity: {humidity}%\nCloud Cover: {cloud}\nWind-Speed: {wind_speed}kph")
         else:
             messagebox.showerror("Error", data.get("error", {}).get("message", "Unable to fetch weather data"))
     except Exception as e:
