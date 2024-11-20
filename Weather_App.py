@@ -3,9 +3,12 @@
 import requests
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
+import io
+
 
 # Function to fetch weather data
-def fetch_weather():
+def get_weather():
     city = city_entry.get()
     api_key = "fa861ae77e724cef99c51659241411"  # Api key
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}"
@@ -15,13 +18,23 @@ def fetch_weather():
         data = response.json()
         
         if response.status_code == 200:
-            location = f"{data['location']['name']}, {data['location']['region']}, {data["location"]["country"]}"
+            location = f"{data['location']['name']}, {data['location']['region']}, {data['location']['country']}"
             temperature = data['current']['temp_c']
             condition = data['current']['condition']['text']
             humidity = data['current']['humidity']
             cloud = data['current']['cloud']
             wind_speed = data['current']['wind_kph']
+
+            # Get the icon image part
+            icon_url = f"http:{data['current']['condition']['icon']}"
+            icon_response = requests.get(icon_url)
+            icon_image = Image.open(io.BytesIO(icon_response.content))
+            icon_photo = ImageTk.PhotoImage(icon_image)
+
             weather_label.config(text=f"\nLocation: {location}\nTemperature: {temperature}°C\nCondition: {condition}\nHumidity: {humidity}%\nCloud Cover: {cloud}\nWind-Speed: {wind_speed}kph")
+            
+            icon_label.config(image=icon_photo)
+            icon_label.image = icon_photo
         else:
             messagebox.showerror("Error", data.get("error", {}).get("message", "Unable to fetch weather data"))
     except Exception as e:
@@ -30,18 +43,25 @@ def fetch_weather():
 # Set up the GUI
 root = tk.Tk()
 root.title("Weather App (By Daniyal)")
-root.geometry("350x200") # width x height
+root.geometry("350x300") # width x height
 
 city_label = tk.Label(root, text="City:")
 city_label.pack()
+
 city_entry = tk.Entry(root)
 city_entry.pack()
 
-fetch_button = tk.Button(root, text="Fetch Weather", command=fetch_weather)
+fetch_button = tk.Button(root, text="Get Weather", command=get_weather)
 fetch_button.pack()
 
 weather_label = tk.Label(root, text="")
 weather_label.pack()
+
+icon_label = tk.Label(root)
+icon_label.pack()
+
+made_by_label = tk.Label(root, text="Made by Daniyal Rashid", font=("Helvetica", 10))
+made_by_label.pack(side=tk.BOTTOM, pady=5)
 
 # Run the application
 root.mainloop()
