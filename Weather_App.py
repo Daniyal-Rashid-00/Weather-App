@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 import io
 
 
-# Function to fetch weather data
+# Function to Get  weather data
 def get_weather():
     city = city_entry.get()
     api_key = "fa861ae77e724cef99c51659241411"  # Api key
@@ -36,11 +36,11 @@ def get_weather():
             icon_label.config(image=icon_photo)
             icon_label.image = icon_photo
         else:
-            messagebox.showerror("Error", data.get("error", {}).get("message", "Unable to fetch weather data"))
+            messagebox.showerror("Error", data.get("error", {}).get("message", "Unable to get weather data"))
     except Exception as e:
-        messagebox.showerror("Error", "Unable to fetch weather data")
+        messagebox.showerror("Error", "Unable to get weather data")
 
-# Set up the GUI
+# TKinter GUI
 root = tk.Tk()
 root.title("Weather App (By Daniyal)")
 root.geometry("350x300") # width x height
@@ -51,8 +51,8 @@ city_label.pack()
 city_entry = tk.Entry(root)
 city_entry.pack()
 
-fetch_button = tk.Button(root, text="Get Weather", command=get_weather)
-fetch_button.pack()
+get_button = tk.Button(root, text="Get Weather", command=get_weather)
+get_button.pack()
 
 weather_label = tk.Label(root, text="")
 weather_label.pack()
