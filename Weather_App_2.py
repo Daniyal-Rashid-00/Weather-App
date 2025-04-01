@@ -5,12 +5,15 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import io
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 
 # Function to fetch weather data
 def fetch_weather():
     city = city_entry.get()
-    api_key = "fa861ae77e724cef99c51659241411"  # Api key
+    api_key = os.getenv("api_key")  # Api key
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}"
 
     try:
@@ -51,7 +54,7 @@ city_label.pack()
 city_entry = tk.Entry(root)
 city_entry.pack()
 
-fetch_button = tk.Button(root, text="Fetch Weather", command=fetch_weather)
+fetch_button = tk.Button(root, text="Get Weather", command=fetch_weather)
 fetch_button.pack()
 
 weather_label = tk.Label(root, text="")

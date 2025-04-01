@@ -5,12 +5,15 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import io
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 
 # Function to Get  weather data
 def get_weather():
     city = city_entry.get()
-    api_key = "fa861ae77e724cef99c51659241411"  # Api key
+    api_key = os.getenv("api_key")  # Api key in .env file
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}"
 
     try:
